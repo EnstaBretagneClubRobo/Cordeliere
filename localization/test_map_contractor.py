@@ -14,6 +14,16 @@ from pyibex import *
 from pyibex.image import *
 from vibes import vibes
 
+def getCtc(h, h0, dh):
+    ### generate the slice image for an altitude h0 ###
+    hBin = ((h < h0 + dh) * (h > h0 - dh)).astype(int)
+
+    ### create the contractor associated with the slice
+    hBin = np.flipud(hBin)  # flip the slice (the origin for an image is the top-left corner)
+    hOut = hBin.cumsum(0).cumsum(1) # compute the integral image
+    ctc = CtcRaster(hOut.T, -1000, 1000, 4, -4)
+
+    return ctc
 
 ### generate the map ###
 x = np.linspace(-1000, 1000, 500)
@@ -26,13 +36,15 @@ cont = plt.contour(x, y, h, 10)
 plt.clabel(cont, inline=1, fontsize=8)
 plt.axis('equal')
 
+h0 = -17
+dh = 0.3
 ### generate the slice image for an altitude h0 ###
-h0 = -17 
-hBin = (h > h0).astype(int) 
+hBin = ((h < h0 + dh) * (h > h0 - dh)).astype(int)
+
 
 plt.subplot(122)
 plt.imshow(hBin, extent=[-1000, 1000, -1000, 1000], origin='lower')
-plt.title("h0 = " + str(h0))
+plt.title("h0 = " + str(h0) + ", dh = " + str(dh))
 plt.show()
 
 ### create the contractor associated with the slice
