@@ -68,8 +68,6 @@ if __name__ == '__main__':
         
         time.sleep(dt)
     
-print(X)
-    
 
 
 
