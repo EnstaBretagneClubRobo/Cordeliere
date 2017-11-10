@@ -1,3 +1,15 @@
+###############################################
+
+# First test of an interval state observer in
+# a scenario where the robot is going forward
+# at a constant speed. The robot computes its
+# position using the bathymetric map
+
+# note: here the bathymetric map is generated
+
+###############################################
+
+
 from vibes import vibes
 import pyibex
 from pyibex import sqr
@@ -6,8 +18,19 @@ import numpy as np
 import time
 
 def getDepth(X):
+    """returns the depth of the sea where
+    the robot is located
+    
+    Arguments:
+        X {(n,1) array numpy} -- the robot state vector ( [x, y, theta, v].T )
+    
+    Returns:
+        h {scalar} -- the noised measurement of the depth
+    """
     x, y = X[0,0], X[1,0]
     h = 10*np.exp(-((x/500)**2 + (y/500)**2)) + 6*np.exp(-((x+600)/300)**2 - ((y-400)/300)**2) - 20
+    noise = dh * (2*np.random.rand() - 1)
+    h = h + noise
     return h
 
 def f(X, u):
@@ -19,9 +42,24 @@ def f(X, u):
     return np.array([[xDot,yDot,thetaDot, vDot]]).T
 
 
-def getCtc(bathy, h0, dh):
-    ### generate the slice image for an altitude h0 ###
-    hBin = ((bathy < h0 + dh) * (bathy > h0 - dh)).astype(int)
+def getCtcBathy(bathy, h, dh):
+    """returns the contractor
+    associated with the measurement of the depth
+    h. 
+    
+    Arguments:
+        bathy {2D numpy array} -- the bathymetric map
+        h     {scalar}         -- the measured depth
+        dh    {scalar}         -- half length of the depth interval
+                                  = incertainty on h
+    
+    Returns:
+        ctc {contractor} -- the contractor associated with the measurement
+                            of the depth
+    """
+
+    ### generate the slice image for an altitude h ###
+    hBin = ((bathy < h + dh) * (bathy > h - dh)).astype(int)
 
     ### create the contractor associated with the slice
     hBin = np.flipud(hBin)  # flip the slice (the origin for an image is the top-left corner)
@@ -43,7 +81,10 @@ if __name__ == '__main__':
 
     X = np.array([[0, 0, 0, 50]], dtype=np.float64).T  # [x, y, theta, v].T
 
+
     dh = 0.5
+    dv = 1
+    dtheta = 0.01
 
     t0 = 0
     tmax = 60
@@ -60,20 +101,30 @@ if __name__ == '__main__':
 
         print(t)
 
+        # measurements
+        v_noise = dv * (2*np.random.rand() - 1)
+        v_measured = X[3,0] + v_noise
+        v = pyibex.Interval(v_measured - dv, v_measured + dv)
+
+        theta_noise = dtheta * (2*np.random.rand() - 1)
+        theta_measured = X[2,0] + theta_noise
+        theta = pyibex.Interval(theta_measured - dtheta, theta_measured + dtheta)
+
         u = np.array([[0,0.3]]).T  # command
         X += dt*f(X, u)  # Euler's scheme
         if t > tm*i:  # SIVIA
             h = getDepth(X)
             if i == 0:  # first SIVIA
-                ctc = getCtc(bathy, h, dh)
+                ctc = getCtcBathy(bathy, h, dh)
             else:
-                fPred = pyibex.Function('x', 'y', '(x - {0}*{1}*cos({2}), y - {0}*{1}*sin({2}))'.format(tm, X[3,0], X[2,0]))
+
+                fPred = pyibex.Function('x', 'y', '(x - {0}*{1}*cos({2}), y - {0}*{1}*sin({2}))'.format(tm, v, theta))
                 ctc_pred = pyibex.CtcInverse(ctc, fPred)
-                ctc_corr = getCtc(bathy, h, dh)
+                ctc_corr = getCtcBathy(bathy, h, dh)
                 ctc = ctc_pred & ctc_corr
                 
             pyibex.pySIVIA(P, ctc, 30)
-            vibes.drawCircle(*X[:2,0].flatten().tolist(),25,"[red]")  # draw robot
+            vibes.drawCircle(*X[:2,0].flatten().tolist(),25,"red")  # draw robot
             
             i+=1
         
