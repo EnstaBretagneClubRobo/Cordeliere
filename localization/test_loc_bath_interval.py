@@ -1,13 +1,21 @@
-###############################################
+#############################################################################
 
-# First test of an interval state observer in
-# a scenario where the robot is going forward
-# at a constant speed. The robot computes its
-# position using the bathymetric map
+# First test of a robot localization on a bathymetric map using an interval
+# state observer. Here the robot is performing a circular path at a constant
+# speed.
+#
+# The robot measures the sea depth h on its position with an uncertainty dh,
+# and takes a slice of the bathymetric map in the range [h-dh, h+dh].
+# The robot must be in this slice.
+# Then it generates a contractor associated with the slice.
+# 
+# The fusion of all the previous contractors with the new one allows the
+# robot to find its position on the map.
+#
+# note: here the bathymetric map is not a real
+# one but a generated one.
 
-# note: here the bathymetric map is generated
-
-###############################################
+#############################################################################
 
 
 from vibes import vibes
@@ -101,26 +109,33 @@ if __name__ == '__main__':
 
         print(t)
 
-        # measurements
+        """measurement step"""
+        # velocity
         v_noise = dv * (2*np.random.rand() - 1)
         v_measured = X[3,0] + v_noise
         v = pyibex.Interval(v_measured - dv, v_measured + dv)
 
+        # heading
         theta_noise = dtheta * (2*np.random.rand() - 1)
         theta_measured = X[2,0] + theta_noise
         theta = pyibex.Interval(theta_measured - dtheta, theta_measured + dtheta)
 
         u = np.array([[0,0.3]]).T  # command
         X += dt*f(X, u)  # Euler's scheme
-        if t > tm*i:  # SIVIA
+        
+        """localization step"""
+        if t > tm*i:
             h = getDepth(X)
             if i == 0:  # first SIVIA
+                # generation of the contractor associated with the current sea depth measurement
                 ctc = getCtcBathy(bathy, h, dh)
             else:
-
+                # translation of the previous contractor because the robot has moved
                 fPred = pyibex.Function('x', 'y', '(x - {0}*{1}*cos({2}), y - {0}*{1}*sin({2}))'.format(tm, v, theta))
-                ctc_pred = pyibex.CtcInverse(ctc, fPred)
+                ctc_pred = pyibex.CtcInverse(ctc, fPred) 
+                # generation of the contractor associated with the current sea depth measurement
                 ctc_corr = getCtcBathy(bathy, h, dh)
+                # fusion
                 ctc = ctc_pred & ctc_corr
                 
             pyibex.pySIVIA(P, ctc, 30)
