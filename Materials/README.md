@@ -21,6 +21,3 @@ Max Guérout. Recherche archéologique de l’épave de la Cordelière (1512) . 
 
 * **R. Abellan--Romita** - *Most of the things* - [SelenKelan](https://github.com/selenkelan)
 * **Y. Guguen** - *still reading*
-
-
-See also the list of [contributors](https://github.com/EnstaBretagneClubRobo/contributors) who participated in this project.
