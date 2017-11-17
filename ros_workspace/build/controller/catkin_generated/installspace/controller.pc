@@ -1,0 +1,8 @@
+prefix=/home/yacine/Documents/cordeliere/Cordeliere/ros_workspace/install
+
+Name: controller
+Description: Description of controller
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/yacine/Documents/cordeliere/Cordeliere/ros_workspace/install/lib 
+Requires: 

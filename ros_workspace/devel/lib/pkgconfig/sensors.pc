@@ -1,0 +1,8 @@
+prefix=/home/yacine/Documents/cordeliere/Cordeliere/ros_workspace/devel
+
+Name: sensors
+Description: Description of sensors
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/yacine/Documents/cordeliere/Cordeliere/ros_workspace/devel/lib 
+Requires: 
