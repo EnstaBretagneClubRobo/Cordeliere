@@ -8,6 +8,7 @@
 
 # modified environment variables
 export CMAKE_PREFIX_PATH="/home/yacine/Documents/cordeliere/Cordeliere/ros_workspace/devel:$CMAKE_PREFIX_PATH"
+export LD_LIBRARY_PATH="/home/yacine/Documents/cordeliere/Cordeliere/ros_workspace/devel/lib:$LD_LIBRARY_PATH"
 export PWD="/home/yacine/Documents/cordeliere/Cordeliere/ros_workspace/build"
 export PYTHONPATH="/opt/ros/kinetic/lib/python2.7/dist-packages:/home/yacine/python"
 export ROSLISP_PACKAGE_DIRECTORIES="/home/yacine/Documents/cordeliere/Cordeliere/ros_workspace/devel/share/common-lisp"

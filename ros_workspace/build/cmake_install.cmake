@@ -117,6 +117,10 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("/home/yacine/Documents/cordeliere/Cordeliere/ros_workspace/build/gtest/cmake_install.cmake")
+  include("/home/yacine/Documents/cordeliere/Cordeliere/ros_workspace/build/actuators/cmake_install.cmake")
+  include("/home/yacine/Documents/cordeliere/Cordeliere/ros_workspace/build/controller/cmake_install.cmake")
+  include("/home/yacine/Documents/cordeliere/Cordeliere/ros_workspace/build/sensors/cmake_install.cmake")
+  include("/home/yacine/Documents/cordeliere/Cordeliere/ros_workspace/build/simulator/cmake_install.cmake")
 
 endif()
 
