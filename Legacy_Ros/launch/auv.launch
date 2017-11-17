@@ -1,0 +1,39 @@
+<launch>
+    <group ns="Environment">
+        <param name="Name" type="string" value="target"/>
+        <param name="Square_map" type="int" value="100"/>
+        <param name="Depth" type="double" value="-8.0"/>
+    
+        <node name="seabed" pkg="cordeliere" type="seabed" output="screen"/>
+        
+        <!-- <node name="pot_field" pkg="cordeliere" type="pot_field" output="screen"/> -->
+
+        <param name="Name_target" type="string" value="target"/>
+        <param name="Target_mode" type="string" value="line"/>
+
+        <node name="cible" pkg="cordeliere" type="cible" output="screen"/>
+    </group>
+
+    <group ns="auv">
+        <param name="Pos_x" type="double" value="-50.0"/>
+        <param name="Pos_y" type="double" value=" 80.0"/>
+        <param name="Pos_z" type="double" value="  0.0"/>
+        
+        <param name="Theta" type="double" value="-1.57"/>
+        <param name="Psi"   type="double" value="  0.0"/>
+        
+        <param name="Cons_u_yaw" type="double" value="0.0"/>
+        <param name="Cons_u_pitch" type="double" value="0.0"/>
+
+        <param name="Regul" type="string" value="line"/>
+        
+        <param name="Name_auv" type="string" value="auv"/>
+        <param name="Vitesse_auv" type="double" value="1.0"/>
+
+        <node name="simu_auv" pkg="cordeliere" type="simu_auv" output="screen"/>
+        <node name="regul_auv" pkg="cordeliere" type="regul_auv" output="screen"/>
+        <node name="magneto" pkg="cordeliere" type="magneto" output="screen"/>
+    </group>
+
+    <node name="serveur_tcp" pkg="cordeliere" type="serveur_tcp" output="screen"/>
+</launch>
