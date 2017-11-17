@@ -1,8 +1,0 @@
-float64 x
-float64 y
-float64 yaw_deriv
-
----
-
-float64 depth
-float64 deriv_sup
