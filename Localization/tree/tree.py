@@ -29,7 +29,7 @@ class Node:
         self.left = left
         self.right = right
 
-    def visit(self):
+    def visitDisplay(self):
         """The method that builds the content of the .dot file used to draw the tree.
 
         (see Tree.saveAsDot method)
@@ -43,7 +43,7 @@ class Node:
 
         # left child
         if self.left is not None:
-            dotStr += self.left.visit()  # visit the left child of the node
+            dotStr += self.left.visitDisplay()  # visit the left child of the node
             dotStr += str(id(self)) \
                 + " -> " \
                 + str(id(self.left)) \
@@ -51,13 +51,15 @@ class Node:
 
         # right child
         if self.right is not None:
-            dotStr += self.right.visit()  # visit the right child of the node
+            dotStr += self.right.visitDisplay()  # visit the right child of the node
             dotStr += str(id(self)) \
                 + " -> " \
                 + str(id(self.right)) \
                 + " [label=\"{0}\"];\n".format(
                 self.axis)  # add a link between the node and its right child
         return dotStr
+    
+    
 
 
 class Tree:
@@ -122,7 +124,7 @@ class Tree:
             filename {string} -- the output file name (ex: tree.dot)
         """
         dotStr = "digraph tree {\n"
-        dotStr += self.root.visit()  # generate the content of the file
+        dotStr += self.root.visitDisplay()  # generate the content of the file
         dotStr += "}"
 
         # save
