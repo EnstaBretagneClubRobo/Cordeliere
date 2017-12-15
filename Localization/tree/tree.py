@@ -58,6 +58,22 @@ class Node:
                 + " [label=\"{0}\"];\n".format(
                 self.axis)  # add a link between the node and its right child
         return dotStr
+
+    def visitContract(self, testedBox, nodeBox):
+        if nodeBox.is_subset(testedBox):
+            return self.itv
+        
+        nodeBoxLeft, nodeBoxRight = nodeBox.bisect(node.axis, ratio=np.ceil(nodeBox[node.axis].diam()/2)/nodeBox[node.axis].diam())
+        if nodeBoxLeft.intersects(testedBox):
+
+            
+            # nodeBoxLeft = pyibex.IntervalVector([[round(nodeBoxLeft[0][0]), round(nodeBoxLeft[0][1])],
+            #                                      [round(nodeBoxLeft[1][0]),round(nodeBoxLeft[1][1])]])
+            # nodeBoxRight = pyibex.IntervalVector([[round(nodeBoxRight[0][0]), round(nodeBoxRight[0][1])],
+            #                                      [round(nodeBoxRight[1][0]),round(nodeBoxRight[1][1])]])
+            self.left.visitContract(testBox, nodeBoxLeft)
+            self.right.visitContract(testBox, nodeBoxRight)
+
     
     
 
