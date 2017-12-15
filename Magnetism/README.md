@@ -1,1 +1,0 @@
-Folder containing papers, scripts and reports related to the magnetism, concerning the Cordelière.
