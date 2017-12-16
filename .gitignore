@@ -23,8 +23,10 @@ msg/_*.py
 # Ignore generated docs
 *.dox
 *.wikidoc
-*.png
-*.dot
+
+#Localization folder
+Localization/*.png
+Localization/*.dot
 
 # eclipse stuff
 .project
