@@ -24,6 +24,10 @@ msg/_*.py
 *.dox
 *.wikidoc
 
+#Localization folder
+Localization/*.png
+Localization/*.dot
+
 # eclipse stuff
 .project
 .cproject
