@@ -7,7 +7,9 @@ int main()
 {
     vector<int> dim;    
         
-    Tree tree(vector<int> {1}, vector<float> {1});
+    Tree tree;
+    tree.fill(vector<int> {2, 2}, vector<float> {1, 2, 3, 4});
+
     
     return 0;
 }
