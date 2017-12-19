@@ -1,4 +1,4 @@
-//#include "ibex.h"
+#include "ibex.h"
 
 
 class Node
@@ -9,7 +9,7 @@ class Node
     
 
     private:
-    //ibex::interval itv;
+    ibex::Interval itv;
     short axis;
     Node left();
     Node right();
