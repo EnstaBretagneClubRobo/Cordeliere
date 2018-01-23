@@ -21,13 +21,13 @@ void Node::createBranch(vector< pair<region, Node*> > &leaves, region currentReg
         }
     }
 
-    cout << "isALeaf test end" << endl;
 
     if (isALeaf)
     {
         pair<region, Node*> leaf;
         leaf.first = currentRegion;
         leaf.second = this;
+        leaves.push_back(leaf);
     }
     else
     {
@@ -36,11 +36,11 @@ void Node::createBranch(vector< pair<region, Node*> > &leaves, region currentReg
         this->left = &leftNode;
         this->right = &rightNode;
 
-        // currentRegion bissection
-        int maxDimLength = 0;
+        // currentRegion bissection (along the first max length dimension : [1 3 3]                                                                     ^
+        int maxDimLength = 0;  //                                              ^
         for (unsigned int i = 0; i < currentRegion.size(); i++)
         {
-            int dimLength = currentRegion[i].second - currentRegion[i].first;
+            int dimLength = currentRegion[i].second - currentRegion[i].first + 1;
             if (dimLength > maxDimLength)
             {
                 this->axis = i;
