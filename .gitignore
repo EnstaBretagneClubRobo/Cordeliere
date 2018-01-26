@@ -28,6 +28,8 @@ msg/_*.py
 #Localization folder
 Localization/*.png
 Localization/*.dot
+Localization/treeCpp/obj/
+Localization/treeCpp/bin/
 
 # eclipse stuff
 .project
