@@ -1,5 +1,3 @@
-
-
 SRC_PATH = ./src
 BIN_PATH = ./bin
 OBJ_PATH = ./obj
