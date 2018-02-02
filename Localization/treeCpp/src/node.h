@@ -8,6 +8,8 @@ class Node
     public:
     Node();
     void createBranch(std::vector< std::pair<region, Node*> > &leaves, region currentRegion);
+
+    ibex::Interval getItv();
     
     private:
     ibex::Interval itv;

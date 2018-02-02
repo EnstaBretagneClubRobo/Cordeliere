@@ -5,14 +5,15 @@ OBJ_PATH = ./obj
 CXXFLAGS = $(shell pkg-config --cflags ibex)
 LIBS = $(shell pkg-config --libs ibex)
 
+all: bin
 
-all: node.o tree.o main.o
+bin: ${OBJ_PATH}/node.o ${OBJ_PATH}/tree.o ${OBJ_PATH}/main.o
 	mkdir -p bin
-	g++ -std=c++11 -Wall ${OBJ_PATH}/*.o -o ${BIN_PATH}/exe ${CXXFLAGS} ${LIBS}
+	g++ -std=c++11 -Wall -o ${BIN_PATH}/exe $^ ${CXXFLAGS} ${LIBS}
 
-%.o: ${SRC_PATH}/%.cpp
+${OBJ_PATH}/%.o: ${SRC_PATH}/%.cpp
 	mkdir -p obj
-	g++ -std=c++11 -Wall -c $< -o ${OBJ_PATH}/$@ ${CXXFLAGS} ${LIBS}
+	g++ -std=c++11 -Wall -c $< -o $@ ${CXXFLAGS} ${LIBS}
 
 clean:
 	rm -rf ${OBJ_PATH}/*.o ${BIN_PATH}/exe
