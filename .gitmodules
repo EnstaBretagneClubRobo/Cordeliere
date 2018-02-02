@@ -1,0 +1,3 @@
+[submodule "Cordeliere_ROSws"]
+	path = Cordeliere_ROSws
+	url = https://github.com/EnstaBretagneClubRobo/Cordeliere_ROSws.git

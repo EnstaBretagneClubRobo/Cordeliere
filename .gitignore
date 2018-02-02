@@ -1,5 +1,6 @@
 build/
 bin/
+obj/
 devel/
 msg_gen/
 srv_gen/
@@ -23,6 +24,12 @@ msg/_*.py
 # Ignore generated docs
 *.dox
 *.wikidoc
+
+#Localization folder
+Localization/*.png
+Localization/*.dot
+Localization/treeCpp/obj/
+Localization/treeCpp/bin/
 
 # eclipse stuff
 .project
