@@ -5,24 +5,25 @@ using region = std::vector< std::pair<int, int> >;
 
 Node::Node()
 {
-    
+    this->p_isALeaf = &isALeaf; 
 }
 
 
 void Node::createBranch(vector< pair<region, Node*> > &leaves, region currentRegion)
 {
     // check if the region corresponds to a leaf (i.e. currentRegion = pixel)
-    bool isALeaf = true;
+    this->isALeaf = true;
     for (unsigned int i = 0; i < currentRegion.size(); i++)
     {
         if (currentRegion[i].first != currentRegion[i].second)
         {
-            isALeaf = false;
+            this->isALeaf = false;
+            break;
         }
     }
 
 
-    if (isALeaf)
+    if (this->isALeaf)
     {
         pair<region, Node*> leaf;
         leaf.first = currentRegion;

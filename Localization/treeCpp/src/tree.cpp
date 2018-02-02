@@ -37,7 +37,7 @@ void Tree::fillLeaves(vector< pair<region, Node*> > leaves, vector<float> data, 
             {
                 //get the value of the neighbour pixel
                 vector<int> neighbour_pixel = pixel;
-                neighbour_pixel[j] -= k;
+                neighbour_pixel[j] += k;
 
                 //check if coordinate is not out of bound
                 bool pixelInData = true;
@@ -46,6 +46,7 @@ void Tree::fillLeaves(vector< pair<region, Node*> > leaves, vector<float> data, 
                     if (neighbour_pixel[l] < 0 or neighbour_pixel[l] >= dims[l])
                     {
                         pixelInData = false;
+                        break;
                     }
                 }
                 if (pixelInData)
@@ -106,4 +107,28 @@ int sub2ind(vector<int> dims, vector<int> sub)
         a *= dims[i];
     }
     return ind;
+}
+
+
+void Tree::DFS(Node* head)
+//Depth First Search Traversal
+{
+    bool debug=true;
+    if (debug){
+        cout << "first_passage";
+        debug=false;
+    }
+    if (not head->isALeaf)
+    {
+        if (not head->left->isALeaf)
+        {
+            DFS(head->left);
+        }
+        if (not head->right->isALeaf)
+        {
+            DFS(head->right);
+        }
+        cout << "Current interval:" << head->itv << endl;
+        //printf("%d  ", head.itv);
+    }
 }
