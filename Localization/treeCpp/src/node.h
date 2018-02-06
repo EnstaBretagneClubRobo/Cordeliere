@@ -10,12 +10,15 @@ class Node
     void createBranch(std::vector< std::pair<region, Node*> > &leaves, region currentRegion);
     Node* left;
     Node* right;
-    ibex::Interval itv;
     bool isALeaf;
     bool* p_isALeaf;
+
+
+    ibex::Interval getItv();
+
     
     private:
-    //ibex::Interval itv;
+    ibex::Interval itv;
     short axis;
     //Node* left;
     //Node* right;

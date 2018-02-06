@@ -57,6 +57,12 @@ void Node::createBranch(vector< pair<region, Node*> > &leaves, region currentReg
 
 }
 
+ibex::Interval Node::getItv()
+{
+    return this->itv;
+}
+
+
 pair<region, region> bissect(region rgn, int axis)
 {
     int length = rgn[axis].second - rgn[axis].first + 1;
@@ -70,3 +76,4 @@ pair<region, region> bissect(region rgn, int axis)
     pair<region, region> childrenRegions = {leftRegion, rightRegion};
     return childrenRegions;
 }
+
