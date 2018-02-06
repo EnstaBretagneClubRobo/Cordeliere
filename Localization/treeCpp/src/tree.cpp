@@ -59,7 +59,7 @@ void Tree::fillLeaves(vector< pair<region, Node*> > leaves, vector<float> data, 
                 }
             }
 
-        leaf.second->itv = ibex::Interval(v_min, v_max);
+        leaf.second->getItv() = ibex::Interval(v_min, v_max);
         }
 
     }
@@ -90,7 +90,7 @@ void Tree::fill(vector<int> dims, vector<float> data)
     {
         // cout << leaves[i].first[0].first << leaves[i].first[0].second << endl;
         // cout << leaves[i].first[1].first << leaves[i].first[1].second << endl << endl;
-        cout << "[" << leaves[i].first[0].first << "," << leaves[i].first[1].first << "] -- " << leaves[i].second->itv << endl;
+        cout << "[" << leaves[i].first[0].first << "," << leaves[i].first[1].first << "] -- " << leaves[i].second->getItv() << endl;
     }
 }
 
