@@ -6,6 +6,20 @@ using region = std::vector< std::pair<int, int> >;
 Node::Node()
 {
     this->p_isALeaf = &isALeaf; 
+    ibex::Interval itv_init(0,0);
+    this->setItv(itv_init);
+}
+
+Node::~Node()
+{
+    if (this->right->right != NULL)
+    {
+        delete this->right;
+    }
+    if (this->left->right != NULL)
+    {
+        delete this->left;
+    }
 }
 
 
@@ -33,9 +47,10 @@ void Node::createBranch(vector< pair<region, Node*> > &leaves, region currentReg
     else
     {
         // creation of the children nodes
-        Node leftNode, rightNode;
-        this->left = &leftNode;
-        this->right = &rightNode;
+        Node* leftNode = new Node();
+        Node* rightNode = new Node();
+        this->left = leftNode;
+        this->right = rightNode;
 
         // currentRegion bissection (along the first max length dimension : [1 3 3]                                                                     ^
         int maxDimLength = 0;  //                                              ^
@@ -60,6 +75,25 @@ void Node::createBranch(vector< pair<region, Node*> > &leaves, region currentReg
 ibex::Interval Node::getItv()
 {
     return this->itv;
+}
+
+void Node::setItv(ibex::Interval interval)
+{
+    this->itv = interval;
+}
+
+void Node::fillNode()
+{
+    if (this->right->right != NULL)
+    {
+        this->right->fillNode();
+    }
+    if (this->left->right != NULL)
+    {
+        this->left->fillNode();
+    }
+
+    this->itv = this->right->itv|this->left->itv;
 }
 
 

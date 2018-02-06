@@ -7,7 +7,9 @@ class Node
 
     public:
     Node();
+    ~Node();
     void createBranch(std::vector< std::pair<region, Node*> > &leaves, region currentRegion);
+    void fillNode();
     Node* left;
     Node* right;
     bool isALeaf;
@@ -15,6 +17,7 @@ class Node
 
 
     ibex::Interval getItv();
+    void setItv(ibex::Interval interval);
 
     
     private:

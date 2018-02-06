@@ -18,6 +18,5 @@ int main()
     tree.DFS(&tree.root);
     // cout << sub2ind(vector<int> {4, 6, 3}, vector<int> {2, 2, 2}) << endl;
     // cout << sub2ind(vector<int> {3, 4, 2}, vector<int> {2, 2, 1}) << endl;
-
     return 0;
 }

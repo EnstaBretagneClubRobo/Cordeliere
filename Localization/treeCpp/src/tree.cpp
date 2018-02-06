@@ -8,13 +8,18 @@ Tree::Tree()
     Node root();         
 }
 
+Tree::~Tree()
+{
+    delete &root;
+}
+
 void Tree::fillNode(Node node)
 {
 
 }
 
 
-void Tree::fillLeaves(vector< pair<region, Node*> > leaves, vector<float> data, vector<int> dims)
+void Tree::fillLeaves(vector< pair<region, Node*> > &leaves, vector<float> data, vector<int> dims)
 {
     for (unsigned int i = 0 ; i < leaves.size(); i++)
     {
@@ -30,7 +35,8 @@ void Tree::fillLeaves(vector< pair<region, Node*> > leaves, vector<float> data, 
         //get the value of the pixel
         float val = data[sub2ind(dims, pixel)];
 
-        float v_min, v_max = val;
+        float v_min =val;
+        float v_max = val;
         for (unsigned int j = 0; j < leaf.first.size(); j++)
         {
             for (int k = -1; k <= 1; k += 2)
@@ -41,7 +47,7 @@ void Tree::fillLeaves(vector< pair<region, Node*> > leaves, vector<float> data, 
 
                 //check if coordinate is not out of bound
                 bool pixelInData = true;
-                for (unsigned int l ; l < dims.size(); l++)
+                for (unsigned int l =0; l < dims.size(); l++)
                 {
                     if (neighbour_pixel[l] < 0 or neighbour_pixel[l] >= dims[l])
                     {
@@ -56,12 +62,15 @@ void Tree::fillLeaves(vector< pair<region, Node*> > leaves, vector<float> data, 
 
                     //get the min and max
                     v_min = min(v_min, nval);
+                    
                     v_max = max(v_max, nval);
                 }
             }
-
-        leaf.second->getItv() = ibex::Interval(v_min, v_max);
+        
         }
+    ibex::Interval result_itv(v_min, v_max);
+
+    leaves[i].second->setItv(result_itv);
 
     }
 }
@@ -83,9 +92,10 @@ void Tree::fill(vector<int> dims, vector<float> data)
 
     // fill the leaves
     fillLeaves(leaves, data, dims);
-    // fill the rest of the tree
 
-    cout << leaves.size() << endl;
+    // fill the rest of the tree
+    this->root.fillNode();
+    cout << "root " << this->root.getItv() << endl;
 
     for (unsigned int i = 0; i < leaves.size(); i++)
     {
