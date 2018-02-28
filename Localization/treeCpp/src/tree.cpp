@@ -8,13 +8,18 @@ Tree::Tree()
     Node root();         
 }
 
+Tree::~Tree()
+{
+    delete &root;
+}
+
 void Tree::fillNode(Node node)
 {
 
 }
 
 
-void Tree::fillLeaves(vector< pair<region, Node*> > leaves, vector<float> data, vector<int> dims)
+void Tree::fillLeaves(vector< pair<region, Node*> > &leaves, vector<float> data, vector<int> dims)
 {
     for (unsigned int i = 0 ; i < leaves.size(); i++)
     {
@@ -30,22 +35,24 @@ void Tree::fillLeaves(vector< pair<region, Node*> > leaves, vector<float> data, 
         //get the value of the pixel
         float val = data[sub2ind(dims, pixel)];
 
-        float v_min, v_max = val;
+        float v_min =val;
+        float v_max = val;
         for (unsigned int j = 0; j < leaf.first.size(); j++)
         {
             for (int k = -1; k <= 1; k += 2)
             {
                 //get the value of the neighbour pixel
                 vector<int> neighbour_pixel = pixel;
-                neighbour_pixel[j] -= k;
+                neighbour_pixel[j] += k;
 
                 //check if coordinate is not out of bound
                 bool pixelInData = true;
-                for (unsigned int l ; l < dims.size(); l++)
+                for (unsigned int l =0; l < dims.size(); l++)
                 {
                     if (neighbour_pixel[l] < 0 or neighbour_pixel[l] >= dims[l])
                     {
                         pixelInData = false;
+                        break;
                     }
                 }
                 if (pixelInData)
@@ -55,12 +62,15 @@ void Tree::fillLeaves(vector< pair<region, Node*> > leaves, vector<float> data, 
 
                     //get the min and max
                     v_min = min(v_min, nval);
+                    
                     v_max = max(v_max, nval);
                 }
             }
-
-        leaf.second->getItv() = ibex::Interval(v_min, v_max);
+        
         }
+    ibex::Interval result_itv(v_min, v_max);
+
+    leaves[i].second->setItv(result_itv);
 
     }
 }
@@ -82,9 +92,10 @@ void Tree::fill(vector<int> dims, vector<float> data)
 
     // fill the leaves
     fillLeaves(leaves, data, dims);
-    // fill the rest of the tree
 
-    cout << leaves.size() << endl;
+    // fill the rest of the tree
+    this->root.fillNode();
+    cout << "root " << this->root.getItv() << endl;
 
     for (unsigned int i = 0; i < leaves.size(); i++)
     {
@@ -106,4 +117,28 @@ int sub2ind(vector<int> dims, vector<int> sub)
         a *= dims[i];
     }
     return ind;
+}
+
+
+void Tree::DFS(Node* head)
+//Depth First Search Traversal
+{
+    bool debug=true;
+    if (debug){
+        cout << "first_passage";
+        debug=false;
+    }
+    if (not head->isALeaf)
+    {
+        if (not head->left->isALeaf)
+        {
+            DFS(head->left);
+        }
+        if (not head->right->isALeaf)
+        {
+            DFS(head->right);
+        }
+        cout << "Current interval:" << head->getItv() << endl;
+        //printf("%d  ", head.itv);
+    }
 }

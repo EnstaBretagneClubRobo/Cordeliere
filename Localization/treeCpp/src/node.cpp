@@ -5,24 +5,39 @@ using region = std::vector< std::pair<int, int> >;
 
 Node::Node()
 {
-    
+    this->p_isALeaf = &isALeaf; 
+    ibex::Interval itv_init(0,0);
+    this->setItv(itv_init);
+}
+
+Node::~Node()
+{
+    if (this->right->right != NULL)
+    {
+        delete this->right;
+    }
+    if (this->left->right != NULL)
+    {
+        delete this->left;
+    }
 }
 
 
 void Node::createBranch(vector< pair<region, Node*> > &leaves, region currentRegion)
 {
     // check if the region corresponds to a leaf (i.e. currentRegion = pixel)
-    bool isALeaf = true;
+    this->isALeaf = true;
     for (unsigned int i = 0; i < currentRegion.size(); i++)
     {
         if (currentRegion[i].first != currentRegion[i].second)
         {
-            isALeaf = false;
+            this->isALeaf = false;
+            break;
         }
     }
 
 
-    if (isALeaf)
+    if (this->isALeaf)
     {
         pair<region, Node*> leaf;
         leaf.first = currentRegion;
@@ -32,9 +47,10 @@ void Node::createBranch(vector< pair<region, Node*> > &leaves, region currentReg
     else
     {
         // creation of the children nodes
-        Node leftNode, rightNode;
-        this->left = &leftNode;
-        this->right = &rightNode;
+        Node* leftNode = new Node();
+        Node* rightNode = new Node();
+        this->left = leftNode;
+        this->right = rightNode;
 
         // currentRegion bissection (along the first max length dimension : [1 3 3]                                                                     ^
         int maxDimLength = 0;  //                                              ^
@@ -61,6 +77,25 @@ ibex::Interval Node::getItv()
     return this->itv;
 }
 
+void Node::setItv(ibex::Interval interval)
+{
+    this->itv = interval;
+}
+
+void Node::fillNode()
+{
+    if (this->right->right != NULL)
+    {
+        this->right->fillNode();
+    }
+    if (this->left->right != NULL)
+    {
+        this->left->fillNode();
+    }
+
+    this->itv = this->right->itv|this->left->itv;
+}
+
 
 pair<region, region> bissect(region rgn, int axis)
 {
@@ -75,3 +110,4 @@ pair<region, region> bissect(region rgn, int axis)
     pair<region, region> childrenRegions = {leftRegion, rightRegion};
     return childrenRegions;
 }
+
