@@ -20,4 +20,3 @@ class Tree
 };
 
 int sub2ind(std::vector<int> dims, std::vector<int> sub);
-
