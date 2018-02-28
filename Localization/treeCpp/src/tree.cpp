@@ -119,6 +119,7 @@ int sub2ind(vector<int> dims, vector<int> sub)
 }
 
 
+/*
 void Tree::DFS(Node* head)
 //Depth First Search Traversal
 {
@@ -141,3 +142,4 @@ void Tree::DFS(Node* head)
         //printf("%d  ", head.itv);
     }
 }
+*/

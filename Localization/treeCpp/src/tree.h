@@ -10,7 +10,7 @@ class Tree
     Node root;
     Tree();
     void fill(std::vector<int> dims, std::vector<float> data);
-    void DFS(Node* head);
+    //void DFS(Node* head);
     
     private:
     //Node root;

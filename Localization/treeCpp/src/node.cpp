@@ -5,9 +5,6 @@ using region = std::vector< std::pair<int, int> >;
 
 Node::Node()
 {
-    this->p_isALeaf = &isALeaf; 
-    ibex::Interval itv_init(0,0);
-    this->setItv(itv_init);
     this->right = nullptr;
     this->left = nullptr;
 }
@@ -24,18 +21,18 @@ void Node::createBranch(vector< pair<region, Node*> > &leaves, region currentReg
 {
     cout << "test createBranch" << endl;
     // check if the region corresponds to a leaf (i.e. currentRegion = pixel)
-    this->isALeaf = true;
+    bool isALeaf = true;
     for (unsigned int i = 0; i < currentRegion.size(); i++)
     {
         if (currentRegion[i].first != currentRegion[i].second)
         {
-            this->isALeaf = false;
+            isALeaf = false;
             break;
         }
     }
 
 
-    if (this->isALeaf)
+    if (isALeaf)
     {
         pair<region, Node*> leaf;
         leaf.first = currentRegion;
@@ -83,13 +80,11 @@ void Node::setItv(ibex::Interval interval)
 void Node::fillNode()
 {
 
-    //if (this->right->right != NULL)
-    if (!this->right->isALeaf)
+    if (this->right->right != nullptr)
     {
         this->right->fillNode();
     }
-    //if (this->left->right != NULL)
-    if (!this->left->isALeaf)
+    if (this->left->right != nullptr)
     {
         this->left->fillNode();
     }
