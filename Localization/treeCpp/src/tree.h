@@ -9,7 +9,6 @@ class Tree
     public:
     Node root;
     Tree();
-    ~Tree();
     void fill(std::vector<int> dims, std::vector<float> data);
     void DFS(Node* head);
     

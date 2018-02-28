@@ -8,23 +8,21 @@ Node::Node()
     this->p_isALeaf = &isALeaf; 
     ibex::Interval itv_init(0,0);
     this->setItv(itv_init);
+    this->right = nullptr;
+    this->left = nullptr;
 }
 
 Node::~Node()
 {
-    if (this->right->right != NULL)
-    {
-        delete this->right;
-    }
-    if (this->left->right != NULL)
-    {
-        delete this->left;
-    }
+    delete this->right;
+    delete this->left;
 }
+
 
 
 void Node::createBranch(vector< pair<region, Node*> > &leaves, region currentRegion)
 {
+    cout << "test createBranch" << endl;
     // check if the region corresponds to a leaf (i.e. currentRegion = pixel)
     this->isALeaf = true;
     for (unsigned int i = 0; i < currentRegion.size(); i++)
@@ -84,15 +82,18 @@ void Node::setItv(ibex::Interval interval)
 
 void Node::fillNode()
 {
-    if (this->right->right != NULL)
+
+    //if (this->right->right != NULL)
+    if (!this->right->isALeaf)
     {
         this->right->fillNode();
     }
-    if (this->left->right != NULL)
+    //if (this->left->right != NULL)
+    if (!this->left->isALeaf)
     {
         this->left->fillNode();
     }
-
+    cout << "test fillNode" << endl;
     this->itv = this->right->itv|this->left->itv;
 }
 

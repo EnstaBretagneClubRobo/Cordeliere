@@ -10,6 +10,7 @@ class Node
     ~Node();
     void createBranch(std::vector< std::pair<region, Node*> > &leaves, region currentRegion);
     void fillNode();
+    void deleting();
     Node* left;
     Node* right;
     bool isALeaf;
