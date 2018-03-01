@@ -9,9 +9,8 @@ class Tree
     public:
     Node root;
     Tree();
-    ~Tree();
     void fill(std::vector<int> dims, std::vector<float> data);
-    void DFS(Node* head);
+    //void DFS(Node* head);
     
     private:
     //Node root;
@@ -21,4 +20,3 @@ class Tree
 };
 
 int sub2ind(std::vector<int> dims, std::vector<int> sub);
-

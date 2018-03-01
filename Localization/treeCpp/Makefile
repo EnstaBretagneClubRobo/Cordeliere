@@ -8,7 +8,7 @@ CFLAGS = -Wall -g
 
 all: bin
 
-bin: ${OBJ_PATH}/node.o ${OBJ_PATH}/tree.o ${OBJ_PATH}/main.o
+bin: ${OBJ_PATH}/node.o ${OBJ_PATH}/tree.o ${OBJ_PATH}/contractor.o ${OBJ_PATH}/main.o
 	mkdir -p bin
 
 	g++ -std=c++11 ${CFLAGS} -o ${BIN_PATH}/exe $^ ${CXXFLAGS} ${LIBS}

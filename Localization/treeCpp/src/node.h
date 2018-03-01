@@ -6,25 +6,24 @@ class Node
 {
 
     public:
-    Node();
-    ~Node();
-    void createBranch(std::vector< std::pair<region, Node*> > &leaves, region currentRegion);
-    void fillNode();
-    Node* left;
-    Node* right;
-    bool isALeaf;
-    bool* p_isALeaf;
+	    Node();
+	    ~Node();
+	    void createBranch(std::vector< std::pair<region, Node*> > &leaves, region currentRegion);
+	    void fillNode();
 
 
-    ibex::Interval getItv();
-    void setItv(ibex::Interval interval);
+	    ibex::Interval getItv();
+	    void setItv(ibex::Interval interval);
+	    Node* getLeft();
+	    Node* getRight();
+	    short getAxis();
 
     
     private:
-    ibex::Interval itv;
-    short axis;
-    //Node* left;
-    //Node* right;
+	    ibex::Interval itv;
+	    short axis;
+	    Node* left;
+	    Node* right;
 };
 
 std::pair<region, region> bissect(region rgn, int axis);

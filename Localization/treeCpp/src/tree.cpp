@@ -8,10 +8,8 @@ Tree::Tree()
     Node root();         
 }
 
-Tree::~Tree()
-{
-    delete &root;
-}
+
+
 
 void Tree::fillNode(Node node)
 {
@@ -21,6 +19,7 @@ void Tree::fillNode(Node node)
 
 void Tree::fillLeaves(vector< pair<region, Node*> > &leaves, vector<float> data, vector<int> dims)
 {
+    cout << "test fillLeaves" << endl;
     for (unsigned int i = 0 ; i < leaves.size(); i++)
     {
         pair<region, Node*> leaf = leaves[i];
@@ -120,6 +119,7 @@ int sub2ind(vector<int> dims, vector<int> sub)
 }
 
 
+/*
 void Tree::DFS(Node* head)
 //Depth First Search Traversal
 {
@@ -142,3 +142,4 @@ void Tree::DFS(Node* head)
         //printf("%d  ", head.itv);
     }
 }
+*/
