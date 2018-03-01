@@ -6,7 +6,7 @@ using region = std::vector< std::pair<int, int> >;
 class Contractor
 {
 	public:
-		Contractor(Tree* pTree, region initialRegion);
+		Contractor(Tree* pTree, std::vector<int> dims);
 		ibex::IntervalVector contract(ibex::IntervalVector box);
 
 	private:

@@ -6,10 +6,14 @@ using namespace std;
 using namespace ibex;
 using region = std::vector< std::pair<int, int> >;
 
-Contractor::Contractor(Tree* pTree, region initialRegion)
+Contractor::Contractor(Tree* pTree, vector<int> dims)
 {
 	this->pTree = pTree;
-	this->initialRegion = initialRegion;
+	// creation of the initial region 
+    for (unsigned int i = 0; i < dims.size(); i++)
+    {
+        this->initialRegion.push_back(make_pair(0, dims[i]-1));
+    }
 }
 
 
@@ -37,7 +41,7 @@ void deepFirstSearch(ibex::IntervalVector box, region currentRegion, Node& curre
 	IntervalVector currentInterval(ndims);
 	for (int i = 0; i < ndims; i++)
 	{
-		currentInterval[i] = Interval(currentRegion[i].first, currentRegion[i].second);
+		currentInterval[i] = Interval(currentRegion[i].first, currentRegion[i].second+1);
 	}
 
 	// check if the region intersect the box

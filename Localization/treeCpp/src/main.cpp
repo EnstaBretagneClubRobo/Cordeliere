@@ -13,6 +13,7 @@
 
 
 using namespace std;
+using namespace ibex;
 
 int socket_RV;
 int socket_service;
@@ -106,6 +107,17 @@ int main()
     printf("coucou\n");
     tree.fill(vector<int> {2,4}, vector<float> {1, 2, 3, 4, 5, 6, 8, 6});
     printf("start\n");
+
+    Contractor contractor(&tree, vector<int> {2,4});
+
+    IntervalVector box(3);
+    box[0] = Interval(0,0.7);
+    box[1] = Interval(1.2,4);
+    box[2] = Interval(0.7, 1.2);
+
+    IntervalVector contractedBox = contractor.contract(box);
+
+    cout << "boite contractee " << contractedBox[0] << " " << contractedBox[1] << " " << contractedBox[2] << endl;
     //printf("%d\n", (int)tree.root.isALeaf);
 
     //printf("%d\n", (int)tree.root->left->isALeaf);
