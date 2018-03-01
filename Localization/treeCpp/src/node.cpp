@@ -77,6 +77,23 @@ void Node::setItv(ibex::Interval interval)
     this->itv = interval;
 }
 
+Node* Node::getLeft()
+{
+    return this->left;
+}
+
+
+Node* Node::getRight()
+{
+    return this->right;
+}
+
+short Node::getAxis()
+{
+    return this->axis;
+}
+
+
 void Node::fillNode()
 {
 

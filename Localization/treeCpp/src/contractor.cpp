@@ -34,32 +34,33 @@ void deepFirstSearch(ibex::IntervalVector box, region currentRegion, Node& curre
 {
 	// cast the currentRegion from region to IntervalVector
 	int ndims = currentRegion.size();
-	IntervalVector currentInterval = IntervalVector(ndims);
+	IntervalVector currentInterval(ndims);
 	for (int i = 0; i < ndims; i++)
 	{
-		currentInterval[0] = Interval(region[i].first, region[i].second);
+		currentInterval[i] = Interval(currentRegion[i].first, currentRegion[i].second);
 	}
 
 	// check if the region intersect the box
-	if (box.subvector(0, box.size() - 2).intersect(currentInterval))
+	if (box.subvector(0, box.size() - 2).intersects(currentInterval))
 	{
 		Interval measurement = box[box.size() - 1];
 		Interval nodeValue = currentNode.getItv();
-		if nodeValue.is_subset(box);
+		IntervalVector nodeValueVect(1, nodeValue);
+		if (nodeValue.is_subset(measurement))
 		{
-			set.push_back(cart_prod(currentInterval, nodeValue));
+			set.push_back(cart_prod(currentInterval, nodeValueVect));
 		}
-		else if (nodeValue.intersect(measurement))
+		else if (nodeValue.intersects(measurement))
 		{
-			if (currentNode.left == nullptr)
+			if (currentNode.getLeft() == nullptr)
 			{
-				set.push_back(cart_prod(currentInterval, nodeValue));
+				set.push_back(cart_prod(currentInterval, nodeValueVect));
 			}
 			else
 			{
-				pair<region, region> childrenRegions = bissect(currentRegion, currentNode.axis);
-				deepFirstSearch(box, childrenRegions.first, *(currentNode.left), set);
-				deepFirstSearch(box, childrenRegions.second, *(currentNode.right), set);
+				pair<region, region> childrenRegions = bissect(currentRegion, currentNode.getAxis());
+				deepFirstSearch(box, childrenRegions.first, *(currentNode.getLeft()), set);
+				deepFirstSearch(box, childrenRegions.second, *(currentNode.getRight()), set);
 			}
 		}
 	}

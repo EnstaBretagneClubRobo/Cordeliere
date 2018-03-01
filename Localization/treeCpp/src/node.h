@@ -14,6 +14,9 @@ class Node
 
 	    ibex::Interval getItv();
 	    void setItv(ibex::Interval interval);
+	    Node* getLeft();
+	    Node* getRight();
+	    short getAxis();
 
     
     private:

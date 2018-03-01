@@ -1,4 +1,3 @@
-#include "tree.h"
 #include "contractor.h"
 #include <vector>
 
