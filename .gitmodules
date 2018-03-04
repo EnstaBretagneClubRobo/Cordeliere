@@ -1,0 +1,9 @@
+[submodule "Cordeliere_ROSws"]
+	path = Cordeliere_ROSws
+	url = https://github.com/EnstaBretagneClubRobo/Cordeliere_ROSws.git
+[submodule "Unity-Vibes/Unity-Vibes"]
+	path = Unity-Vibes/Unity-Vibes
+	url = https://github.com/RemiRigal/Unity-Vibes
+[submodule "Unity-Vibes/PyUnityVibes"]
+	path = Unity-Vibes/PyUnityVibes
+	url = https://github.com/NoelieRamuzat/PyUnityVibes
