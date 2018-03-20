@@ -1,0 +1,57 @@
+%% main 
+
+%%
+clear all ; close all ; clc ;
+
+
+%%
+[X,Y1] = meshgrid(0:74);
+Z = randn(size(X));
+Z = imfilter(Z,fspecial('gaussian',[40 40],8));
+%%
+load data1.mat
+x = S(:,1);
+y = S(:,2);
+z = Y ;
+
+clear S ; clear Y;
+
+
+%% Gaussien data
+% n = 50;
+% x = rand(n,1)*500;
+% y = rand(n,1)*500;
+% z = rand(n,1)*100 ;
+%% random data 
+% Mu = 0.146053128; 
+% sigma = 0.13470517; 
+% x = normrnd(Mu, sigma, 200, 1) * 50 ;
+% y = normrnd(Mu, sigma, 200, 1) * 50 ;
+% z = normrnd(Mu, sigma, 200, 1) * 50 ;
+% 
+% clear Mu ; clear sigma;
+
+
+%%
+v = variogram([x y],z,'plotit',false,'maxdist',100);
+
+%%
+[range,sill] = variogramfit(v.distance,v.val,[],[],[],'model','stable');
+%%
+[elevation] = kriging(x,y,z,range,sill);
+
+%% Calcul d'erreur
+[vstruct] = variogramfit_var(v.distance,v.val,[],[],[],'model','stable');
+[Zvar] = kriging_erreur(vstruct,x,y,z,X,Y1);
+
+%% 3D
+figure(1) , 
+surf(X,Y1,elevation) , colorbar , title ('3D');
+hold on ;
+mesh(X,Y1,Zvar) ,title('kriging variance')
+
+
+
+
+
+
